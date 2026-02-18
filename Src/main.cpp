@@ -13,5 +13,9 @@ int main(void) {
     list.add(2);
     list.add(3);
     list.print();
+
+    int* thing = list.get(2);
+    *thing = 12;
+    list.print();
     return 0;
 }

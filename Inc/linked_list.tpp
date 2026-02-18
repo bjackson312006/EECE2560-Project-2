@@ -54,14 +54,18 @@ template <typename T> void LinkedList<T>::destroy(void) {
 /* Gets a poitner to the data stored at a node. */
 template <typename T> T* LinkedList<T>::get(int index) {
     Node* current = this->head;
-    for(int i = 0; i <= index; i++) {
+    for(int i = 0; i < index; i++) {
         if(current == nullptr) {
             std::cout << "ERROR: Index does not exist in list." << std::endl;
             return nullptr;
         }
         current = current->next;
     }
-    return current;
+    if(current == nullptr) {
+        std::cout << "ERROR: Index does not exist in list." << std::endl;
+        return nullptr;
+    }
+    return &current->data;
 }
 
 /* Prints the linked list. */
