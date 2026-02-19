@@ -22,7 +22,8 @@ Deck::~Deck(void) {
     this->size = 0;
 }
 
-/* Prints out the entire list of cards. */
-void Deck::print(void) {
-    this->list.print();
+/* Overloaded << to allow for printing the deck. */
+std::ostream& operator<<(std::ostream& os, const Deck& deck) {
+    os << deck.list;
+    return os;
 }

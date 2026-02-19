@@ -11,7 +11,9 @@ template <typename T> class LinkedList {
         void add(T data);   // Creates a new node of type T, and fills it with `data`. This node becomes the new head of the list.
         T* get(int index);  // Returns a pointer to the data stored in the node at `index`. You have direct access to this pointer and can use/modify the value as you wish. You don't have access to the entire node though, and can't free it.
         void destroy(void); // Deallocates the entire LinkedList.
-        void print(void);   // Prints the linked list.
+        
+        /* Overloaded << to allow for printing. */
+        template <typename U> friend std::ostream& operator<<(std::ostream& os, const LinkedList<U>& list);
     private:
         /* Link list node struct. */
         struct Node {
@@ -70,13 +72,14 @@ template <typename T> T* LinkedList<T>::get(int index) {
     return &current->data;
 }
 
-/* Prints the linked list. */
-template <typename T> void LinkedList<T>::print(void) {
-    std::cout << "Printing linked list:" << std::endl;
-    Node* current = this->head;
+/* Overloaded << to allow for printing the linked list. */
+template <typename T> std::ostream& operator<<(std::ostream& os, const LinkedList<T>& list) {
+    os << "Printing linked list:" << std::endl;
+    typename LinkedList<T>::Node* current = list.head;
     while(current != nullptr) {
-        std::cout << current->data << ",";
+        os << current->data << ",";
         current = current->next;
     }
-    std::cout << std::endl;
+    os << std::endl;
+    return os;
 }

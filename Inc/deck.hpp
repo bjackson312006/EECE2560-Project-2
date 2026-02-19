@@ -8,8 +8,8 @@ class Deck {
         Deck(void);  // Constructor.
         ~Deck(void); // Destructor.
 
-        /* Prints out the entire list of cards. */
-        void print(void);
+        /* Overloaded << to allow for printing. */
+        friend std::ostream& operator<<(std::ostream& os, const Deck& deck);
     private:
         static constexpr int DECK_MAX_SIZE = 52; // Max size of a deck.
         LinkedList<Card> list; // Linked list for the cards.

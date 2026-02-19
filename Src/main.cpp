@@ -5,6 +5,6 @@
 int main(void) {
     Deck deck;
 
-    deck.print();
+    std::cout << deck;
     return 0;
 }
