@@ -11,6 +11,7 @@
                 "-I${workspaceFolder}/Inc",
                 "${workspaceFolder}/Src/main.cpp",
                 "${workspaceFolder}/Src/card.cpp",
+                "${workspaceFolder}/Src/deck.cpp",
                 "-o",
                 "${workspaceFolder}/main"
             ],

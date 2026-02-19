@@ -4,10 +4,10 @@
 constexpr const char* Card::suitToString(suit_t suit) {
     /* Constexpr lookup table for converting enum values to strings. */
     constexpr const char* suits[Card::NUM_SUITS] {
-        [Card::CLUB] = "CLUB",
-        [Card::DIAMOND] = "DIAMOND",
+        [Card::SPADE] = "SPADE",
         [Card::HEART] = "HEART",
-        [Card::SPADE] = "SPADE"
+        [Card::DIAMOND] = "DIAMOND",
+        [Card::CLUB] = "CLUB"
     };
     return suits[suit];
 }
@@ -15,18 +15,18 @@ constexpr const char* Card::suitToString(suit_t suit) {
 /* Helper function to convert a value_t enum value into a string. */
 constexpr const char* Card::valueToString(value_t value) {
     constexpr const char* values[Card::NUM_VALUES] {
-        [Card::TWO] = "TWO",
-        [Card::THREE] = "THREE",
-        [Card::FOUR] = "FOUR",
-        [Card::FIVE] = "FIVE",
-        [Card::SIX] = "SIX",
-        [Card::SEVEN] = "SEVEN",
-        [Card::EIGHT] = "EIGHT",
-        [Card::NINE] = "NINE",
-        [Card::TEN] = "TEN",
-        [Card::JACK] = "JACK",
-        [Card::QUEEN] = "QUEEN",
         [Card::KING] = "KING",
+        [Card::QUEEN] = "QUEEN",
+        [Card::JACK] = "JACK",
+        [Card::TEN] = "TEN",
+        [Card::NINE] = "NINE",
+        [Card::EIGHT] = "EIGHT",
+        [Card::SEVEN] = "SEVEN",
+        [Card::SIX] = "SIX",
+        [Card::FIVE] = "FIVE",
+        [Card::FOUR] = "FOUR",
+        [Card::THREE] = "THREE",
+        [Card::TWO] = "TWO",
         [Card::ACE] = "ACE"
     };
     return values[value];
@@ -60,6 +60,6 @@ Card::suit_t Card::getSuit(void) const {
 
 /* Overloaded << to allow for printing. */
 std::ostream& operator<<(std::ostream& os, const Card& card) {
-    os << Card::suitToString(card.suit) << " of " << Card::valueToString(card.value) << "S";
+    os << Card::valueToString(card.value) << " of " << Card::suitToString(card.suit) << "S";
     return os;
 }

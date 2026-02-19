@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 
 class Card {
@@ -5,10 +7,10 @@ class Card {
     public:
         /* Enum to store the different possible suit options. */
         typedef enum {
-            CLUB,
-            DIAMOND,
-            HEART,
             SPADE,
+            HEART,
+            DIAMOND,
+            CLUB,
 
             NUM_SUITS // Total number of suit options.
         } suit_t;
@@ -16,18 +18,18 @@ class Card {
 
         /* Enum to store the different possible card values. */
         typedef enum {
-            TWO,
-            THREE,
-            FOUR,
-            FIVE,
-            SIX,
-            SEVEN,
-            EIGHT,
-            NINE,
-            TEN,
-            JACK,
-            QUEEN,
             KING,
+            QUEEN,
+            JACK,
+            TEN,
+            NINE,
+            EIGHT,
+            SEVEN,
+            SIX,
+            FIVE,
+            FOUR,
+            THREE,
+            TWO,
             ACE,
 
             NUM_VALUES // Total number of value options.

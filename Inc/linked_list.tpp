@@ -1,5 +1,8 @@
+#pragma once
+
 #include <iostream>
 
+/* Note: This isn't separated between a header and source file due to template use. */
 template <typename T> class LinkedList {
     public:
         LinkedList(void); // Constructor.
@@ -12,7 +15,7 @@ template <typename T> class LinkedList {
     private:
         /* Link list node struct. */
         struct Node {
-            T data = 0; // The data stored in the node.
+            T data; // The data stored in the node.
             struct Node* next = nullptr; // The next node in the list. Is nullptr by default.
         };
 
@@ -32,10 +35,8 @@ template <typename T> LinkedList<T>::~LinkedList(void) {
 
 /* Creates a new node with datatype T, and sets it as the new head. */
 template <typename T> void LinkedList<T>::add(T data) {
-    Node* node = new Node;   // Create the new node.
-    node->data = data;       // File node with the data.
-    node->next = this->head; // Set node->next to the current head.
-    this->head = node;       // Set the current head to the new node.
+    Node* node = new Node{data, this->head}; // Create the new node with data and next pointer.
+    this->head = node; // Set the current head to the new node.
     std::cout << "Added node with value " << data << std::endl;
 }
 
@@ -49,6 +50,7 @@ template <typename T> void LinkedList<T>::destroy(void) {
         delete current;
         current = next;
     }
+    this->head = nullptr; // Set head to nullptr to avoid dangling pointer
 }
 
 /* Gets a poitner to the data stored at a node. */
