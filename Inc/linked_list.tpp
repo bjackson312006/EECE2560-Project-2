@@ -1,27 +1,28 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
 
 /* Note: This isn't separated between a header and source file due to template use. */
 template <typename T> class LinkedList {
     public:
-        LinkedList(void); // Constructor.
-        ~LinkedList(void); // Destructor.
+        LinkedList(void);   // Constructor.
+        ~LinkedList(void);  // Destructor.
 
-        void add(T data);   // Creates a new node of type T, and fills it with `data`. This node becomes the new head of the list.
-        T* get(int index);  // Returns a pointer to the data stored in the node at `index`. You have direct access to this pointer and can use/modify the value as you wish. You don't have access to the entire node though, and can't free it.
-        void destroy(void); // Deallocates the entire LinkedList.
+        void add(T data);               // Creates a new node of type T, and fills it with `data`. This node becomes the new head of the list.
+        T* get(int index);              // Returns a pointer to the data stored in the node at `index`. You have direct access to this pointer and can use/modify the value as you wish. You don't have access to the entire node though, and can't free it.
+        void destroy(void);             // Deallocates the entire LinkedList.
+        std::vector<T> toVector(void);  // Returns a copy of the linked list as a vector.
         
         /* Overloaded << to allow for printing. */
         template <typename U> friend std::ostream& operator<<(std::ostream& os, const LinkedList<U>& list);
-    private:
+
         /* Link list node struct. */
         struct Node {
             T data; // The data stored in the node.
             struct Node* next = nullptr; // The next node in the list. Is nullptr by default.
         };
-
-        Node* head = nullptr;      // Head of the linked list. Is nullptr by default
+        Node* head = nullptr; // Head of the linked list. Is nullptr by default
 };
 
 /* IMPLEMENTATION */
@@ -82,4 +83,15 @@ template <typename T> std::ostream& operator<<(std::ostream& os, const LinkedLis
     }
     os << std::endl;
     return os;
+}
+
+/* Converts a linked list to a vector. */
+template <typename T> std::vector<T> LinkedList<T>::toVector(void) {
+    std::vector<T> v;
+    Node* current = this->head;
+    while(current != nullptr) {
+        v.push_back(current->data);
+        current = current->next;
+    }
+    return v;
 }

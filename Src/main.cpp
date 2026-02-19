@@ -6,5 +6,9 @@ int main(void) {
     Deck deck;
 
     std::cout << deck;
+
+    deck.shuffle();
+
+    std::cout << deck;
     return 0;
 }

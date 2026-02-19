@@ -2,6 +2,14 @@
 
 #include <iostream>
 
+/* 
+*   Note: Used enums for the suit and values (rather than storing them as strings) to enforce the
+*         possible options (i.e., it's harder to accidentally create a card that doesn't exist).
+*         Doing this is kind of gross when you need to print out suits or values, but the lookup tables
+*         should be able to convert the enum types to strings fairly quickly. Also, it's probably (?) slightly
+*         more space efficient to store them as enums since they're just integers.
+*/
+
 class Card {
 
     public:

@@ -1,4 +1,6 @@
 #include "deck.hpp"
+#include <algorithm>
+#include <random>
 
 /* Constructor. Initializes the linked list. */
 Deck::Deck(void) {
@@ -26,4 +28,25 @@ Deck::~Deck(void) {
 std::ostream& operator<<(std::ostream& os, const Deck& deck) {
     os << deck.list;
     return os;
+}
+
+/* Suffles the order of the deck. */
+void Deck::shuffle(void) {
+    std::vector<Card> cards = this->list.toVector(); // Convert linked list into a vector.
+
+    /* Shuffle the vector. */
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::shuffle(cards.begin(), cards.end(), mt);
+
+    /* Put vector back into linked list. */
+    LinkedList<Card>::Node* current = this->list.head;
+    for(int i = 0; i < cards.size(); i++) {
+        if(current == nullptr) {
+            std::cout << "ERROR: Size inconsistency between vector and linked list while resizing. There might be a bug in LinkedList::toVector()." << std::endl;
+            return;
+        }
+        current->data = cards[i];
+        current = current->next;
+    }
 }
