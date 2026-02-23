@@ -3,19 +3,35 @@
 #include <iostream>
 #include <vector>
 
+//
+// Brian Mack, Juan Ipina, Blake Jackson, james Su
+// Project #2 Flip Cards-a Upload Link
+// Template class for LinkedList implementation
+//
+
 /* Note: This isn't separated between a header and source file due to template use. */
 template <typename T> class LinkedList {
     public:
-        LinkedList(void);   // Constructor.
-        ~LinkedList(void);  // Destructor.
+        LinkedList(void);
+        // Constructor.
 
-        void add(T data);               // Creates a new node of type T, and fills it with `data`. This node becomes the new head of the list.
-        T* get(int index);              // Returns a pointer to the data stored in the node at `index`. You have direct access to this pointer and can use/modify the value as you wish. You don't have access to the entire node though, and can't free it.
-        void destroy(void);             // Deallocates the entire LinkedList.
-        std::vector<T> toVector(void);  // Returns a copy of the linked list as a vector.
+        ~LinkedList(void);
+        // Destructor.
+
+        void add(T data);
+        // Creates a new node of type T, and fills it with `data`. This node becomes the new head of the list.
+
+        T* get(int index);
+        // Returns a pointer to the data stored in the node at `index`. You have direct access to this pointer and can use/modify the value as you wish. You don't have access to the entire node though, and can't free it.
+
+        void destroy(void);
+        // Deallocates the entire LinkedList.
+
+        std::vector<T> toVector(void);
+        // Returns a copy of the linked list as a vector.
         
-        /* Overloaded << to allow for printing. */
         template <typename U> friend std::ostream& operator<<(std::ostream& os, const LinkedList<U>& list);
+        // Overloaded << to allow for printing.
 
         /* Link list node struct. */
         struct Node {

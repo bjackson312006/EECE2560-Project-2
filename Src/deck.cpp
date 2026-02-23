@@ -2,8 +2,14 @@
 #include <algorithm>
 #include <random>
 
+//
+// Brian Mack, Juan Ipina, Blake Jackson, james Su
+// Project #2 Flip Cards-a Upload Link
+// Source file for the deck class.
+//
+
 /* Constructor. Initializes the linked list. */
-Deck::Deck(void) {
+Deck::Deck(void) : front(list.head) {
     /* Fill the deck. */
     for(int suit = Card::SPADE; suit < Card::NUM_SUITS; suit++) {
         for(int value = Card::KING; value < Card::NUM_VALUES; value++) {

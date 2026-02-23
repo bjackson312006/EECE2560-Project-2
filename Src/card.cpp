@@ -1,13 +1,19 @@
 #include "card.hpp"
 
+//
+// Brian Mack, Juan Ipina, Blake Jackson, james Su
+// Project #2 Flip Cards-a Upload Link
+// Source file for the card class.
+//
+
 /* Helper function to convert a suit_t enum value into a string. */
 constexpr const char* Card::suitToString(suit_t suit) {
     /* Constexpr lookup table for converting enum values to strings. */
     constexpr const char* suits[Card::NUM_SUITS] {
-        [Card::SPADE] = "SPADE",
-        [Card::HEART] = "HEART",
-        [Card::DIAMOND] = "DIAMOND",
-        [Card::CLUB] = "CLUB"
+        "SPADE",    // Card::SPADE
+        "HEART",    // Card::HEART
+        "DIAMOND",  // Card::DIAMOND
+        "CLUB"      // Card::CLUB
     };
     return suits[suit];
 }
@@ -15,19 +21,19 @@ constexpr const char* Card::suitToString(suit_t suit) {
 /* Helper function to convert a value_t enum value into a string. */
 constexpr const char* Card::valueToString(value_t value) {
     constexpr const char* values[Card::NUM_VALUES] {
-        [Card::KING] = "KING",
-        [Card::QUEEN] = "QUEEN",
-        [Card::JACK] = "JACK",
-        [Card::TEN] = "TEN",
-        [Card::NINE] = "NINE",
-        [Card::EIGHT] = "EIGHT",
-        [Card::SEVEN] = "SEVEN",
-        [Card::SIX] = "SIX",
-        [Card::FIVE] = "FIVE",
-        [Card::FOUR] = "FOUR",
-        [Card::THREE] = "THREE",
-        [Card::TWO] = "TWO",
-        [Card::ACE] = "ACE"
+        "KING",   // Card::KING
+        "QUEEN",  // Card::QUEEN
+        "JACK",   // Card::JACK
+        "TEN",    // Card::TEN
+        "NINE",   // Card::NINE
+        "EIGHT",  // Card::EIGHT
+        "SEVEN",  // Card::SEVEN
+        "SIX",    // Card::SIX
+        "FIVE",   // Card::FIVE
+        "FOUR",   // Card::FOUR
+        "THREE",  // Card::THREE
+        "TWO",    // Card::TWO
+        "ACE"     // Card::ACE
     };
     return values[value];
 }
