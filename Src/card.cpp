@@ -1,26 +1,37 @@
-#include "card.hpp"
-
 //
 // Brian Mack, Juan Ipina, Blake Jackson, james Su
 // Project #2 Flip Cards-a Upload Link
 // Source file for the card class.
 //
+#include "card.hpp"
 
-/* Helper function to convert a suit_t enum value into a string. */
-constexpr const char* Card::suitToString(suit_t suit) {
+constexpr const char* Card::suitToString(suit_t suit)
+/* Helper function to convert a suit_t enum value into a string.
+ * parameters - suit: suit to convert to a string.
+ * assumptions - suit is a valid Card::suit_t value.
+ */
+{
+
     /* Constexpr lookup table for converting enum values to strings. */
-    constexpr const char* suits[Card::NUM_SUITS] {
+    constexpr const char* suits[Card::NUM_SUITS] =
+    {
         "SPADE",    // Card::SPADE
         "HEART",    // Card::HEART
         "DIAMOND",  // Card::DIAMOND
         "CLUB"      // Card::CLUB
     };
     return suits[suit];
-}
+} // end Card::suitToString
 
-/* Helper function to convert a value_t enum value into a string. */
-constexpr const char* Card::valueToString(value_t value) {
-    constexpr const char* values[Card::NUM_VALUES] {
+constexpr const char* Card::valueToString(value_t value)
+/* Helper function to convert a value_t enum value into a string.
+ * parameters - value: value to convert to a string.
+ * assumptions - value is a valid Card::value_t value.
+ */
+{
+
+    constexpr const char* values[Card::NUM_VALUES] =
+    {
         "KING",   // Card::KING
         "QUEEN",  // Card::QUEEN
         "JACK",   // Card::JACK
@@ -36,36 +47,55 @@ constexpr const char* Card::valueToString(value_t value) {
         "ACE"     // Card::ACE
     };
     return values[value];
-}
+} // end Card::valueToString
 
-/* Sets up the Card object w/ the configured suit/value options. */
-Card::Card(suit_t suit, value_t value) {
+Card::Card(suit_t suit, value_t value)
+/* Sets up the Card object w/ the configured suit/value options.
+ * parameters - suit: card suit, value: card value.
+ * assumptions - suit/value are valid enum values.
+ */
+{
     this->suit = suit;
     this->value = value;
 }
 
-/* Sets the card's value. */
-void Card::setValue(value_t value) {
+void Card::setValue(value_t value)
+/* Sets the card's value.
+ * parameters - value: new card value.
+ * assumptions - value is a valid Card::value_t value.
+ */
+{
     this->value = value;
 }
 
-/* Sets the card's suit. */
-void Card::setSuit(suit_t suit) {
+void Card::setSuit(suit_t suit)
+/* Sets the card's suit.
+ * parameters - suit: new card suit.
+ * assumptions - suit is a valid Card::suit_t value.
+ */
+{
     this->suit = suit;
 }
 
+Card::value_t Card::getValue(void) const
 /* Gets the card's value. */
-Card::value_t Card::getValue(void) const {
+{
     return this->value;
 }
 
+Card::suit_t Card::getSuit(void) const
 /* Gets the card's suit. */
-Card::suit_t Card::getSuit(void) const {
+{
     return this->suit;
 }
 
-/* Overloaded << to allow for printing. */
-std::ostream& operator<<(std::ostream& os, const Card& card) {
-    os << Card::valueToString(card.value) << " of " << Card::suitToString(card.suit) << "S";
+std::ostream& operator<<(std::ostream& os, const Card& card)
+/* Overloaded << to allow for printing.
+ * parameters - os: output stream, card: card to print.
+ * assumptions - os is valid.
+ */
+{
+    os << Card::valueToString(card.value) << " of "
+       << Card::suitToString(card.suit) << "S";
     return os;
 }

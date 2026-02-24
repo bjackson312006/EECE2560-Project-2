@@ -1,16 +1,17 @@
-#pragma once
-
-#include <iostream>
-#include <vector>
-
 //
 // Brian Mack, Juan Ipina, Blake Jackson, james Su
 // Project #2 Flip Cards-a Upload Link
 // Template class for LinkedList implementation
 //
+#pragma once
 
-/* Note: This isn't separated between a header and source file due to template use. */
-template <typename T> class LinkedList {
+#include <iostream>
+#include <vector>
+
+/* Note: This isn't separated between a header and source file due to */
+/* template use. */
+template <typename T> class LinkedList
+{
     public:
         LinkedList(void);
         // Constructor.
@@ -19,10 +20,14 @@ template <typename T> class LinkedList {
         // Destructor.
 
         void add(T data);
-        // Creates a new node of type T, and fills it with `data`. This node becomes the new head of the list.
+        // Creates a new node of type T, and fills it with `data`. This node
+        // becomes the new head of the list.
 
         T* get(int index);
-        // Returns a pointer to the data stored in the node at `index`. You have direct access to this pointer and can use/modify the value as you wish. You don't have access to the entire node though, and can't free it.
+        // Returns a pointer to the data stored in the node at `index`. You
+        // have direct access to this pointer and can use/modify the value as
+        // you wish. You don't have access to the entire node though, and
+        // can't free it.
 
         void destroy(void);
         // Deallocates the entire LinkedList.
@@ -30,84 +35,124 @@ template <typename T> class LinkedList {
         std::vector<T> toVector(void);
         // Returns a copy of the linked list as a vector.
         
-        template <typename U> friend std::ostream& operator<<(std::ostream& os, const LinkedList<U>& list);
+        template <typename U> friend std::ostream& operator<<(
+            std::ostream& os,
+            const LinkedList<U>& list);
         // Overloaded << to allow for printing.
 
         /* Link list node struct. */
-        struct Node {
+        struct Node
+        {
             T data; // The data stored in the node.
-            struct Node* next = nullptr; // The next node in the list. Is nullptr by default.
+            struct Node* next = nullptr; // The next node in the list. Is
+                                         // nullptr by default.
         };
         Node* head = nullptr; // Head of the linked list. Is nullptr by default
 };
 
 /* IMPLEMENTATION */
+template <typename T> LinkedList<T>::LinkedList(void)
 /* Constructor. */
-template <typename T> LinkedList<T>::LinkedList(void) {
+{
     return;
 }
 
+template <typename T> LinkedList<T>::~LinkedList(void)
 /* Destructor. Lists should be completely freed when they go out of scope. */
-template <typename T> LinkedList<T>::~LinkedList(void) {
+{
     this->destroy();
 }
 
-/* Creates a new node with datatype T, and sets it as the new head. */
-template <typename T> void LinkedList<T>::add(T data) {
-    Node* node = new Node{data, this->head}; // Create the new node with data and next pointer.
+template <typename T> void LinkedList<T>::add(T data)
+/* Creates a new node with datatype T, and sets it as the new head.
+ * parameters - data: value to store in the new node.
+ */
+{
+    Node* node = new Node{data, this->head};
+
+    // Create the new node with data and next pointer.
+    node->data = data;
+    node->next = this->head;
     this->head = node; // Set the current head to the new node.
-    std::cout << "Added node with value " << data << std::endl;
 }
 
+template <typename T> void LinkedList<T>::destroy(void)
 /* Deallocates the entire LinkedList. */
-template <typename T> void LinkedList<T>::destroy(void) {
+{
     Node* current = this->head;
     Node* next = nullptr;
-    while(current != nullptr) {
-        std::cout << "Deleting node with value " << current->data << std::endl;
+
+    while (current != nullptr)
+    {
         next = current->next;
         delete current;
         current = next;
     }
-    this->head = nullptr; // Set head to nullptr to avoid dangling pointer
-}
 
-/* Gets a poitner to the data stored at a node. */
-template <typename T> T* LinkedList<T>::get(int index) {
+    this->head = nullptr; // Set head to nullptr to avoid dangling pointer
+} // end LinkedList::destroy
+
+template <typename T> T* LinkedList<T>::get(int index)
+/* Gets a poitner to the data stored at a node.
+ * parameters - index: zero-based index into the list.
+ * assumptions - index >= 0.
+ */
+{
     Node* current = this->head;
-    for(int i = 0; i < index; i++) {
-        if(current == nullptr) {
+
+    for (int i = 0; i < index; i++)
+    {
+
+        if (current == nullptr)
+        {
             std::cout << "ERROR: Index does not exist in list." << std::endl;
             return nullptr;
         }
+
         current = current->next;
     }
-    if(current == nullptr) {
+
+    if (current == nullptr)
+    {
         std::cout << "ERROR: Index does not exist in list." << std::endl;
         return nullptr;
     }
-    return &current->data;
-}
 
-/* Overloaded << to allow for printing the linked list. */
-template <typename T> std::ostream& operator<<(std::ostream& os, const LinkedList<T>& list) {
+    return &current->data;
+} // end LinkedList::get
+
+template <typename T> std::ostream& operator<<(
+    std::ostream& os,
+    const LinkedList<T>& list)
+/* Overloaded << to allow for printing the linked list.
+ * parameters - os: output stream, list: list to print.
+ * assumptions - os is valid.
+ */
+{
     os << "Printing linked list:" << std::endl;
     typename LinkedList<T>::Node* current = list.head;
-    while(current != nullptr) {
+
+    while (current != nullptr)
+    {
         os << current->data << ",";
         current = current->next;
     }
+
     os << std::endl;
     return os;
-}
+} // end operator<<
 
+template <typename T> std::vector<T> LinkedList<T>::toVector(void)
 /* Converts a linked list to a vector. */
-template <typename T> std::vector<T> LinkedList<T>::toVector(void) {
+{
     std::vector<T> v;
     Node* current = this->head;
-    while(current != nullptr) {
+
+    while (current != nullptr)
+    {
         v.push_back(current->data);
         current = current->next;
     }
+
     return v;
-}
+} // end LinkedList::toVector

@@ -1,15 +1,16 @@
+//
+// Brian Mack, Juan Ipina, Blake Jackson, james Su
+// Project #2 Flip Cards-a Upload Link
+// Header for the deck class (basically just wrapping around a linked list of
+// card objects).
+//
 #pragma once
 
 #include "linked_list.tpp"
 #include "card.hpp"
 
-//
-// Brian Mack, Juan Ipina, Blake Jackson, james Su
-// Project #2 Flip Cards-a Upload Link
-// Header for the deck class (basically just wrapping around a linked list of card objects).
-//
-
-class Deck {
+class Deck
+{
     public:
         Deck(void);
         // Constructor.
@@ -23,7 +24,8 @@ class Deck {
         friend std::ostream& operator<<(std::ostream& os, const Deck& deck);
         // Overloaded << to allow for printing.
     public:
-        LinkedList<Card>::Node*& front; // Reference to the first card in the deck (aliases list.head).
+        LinkedList<Card>::Node*& front; // Reference to the first card in the
+                                        // deck (aliases list.head).
 
     private:
         static constexpr int DECK_MAX_SIZE = 52; // Max size of a deck.
