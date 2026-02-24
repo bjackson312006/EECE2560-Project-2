@@ -131,10 +131,17 @@ template <typename T> std::ostream& operator<<(
 {
     os << "Printing linked list:" << std::endl;
     typename LinkedList<T>::Node* current = list.head;
+    bool first = true;
 
     while (current != nullptr)
     {
-        os << current->data << ",";
+        if (!first)
+        {
+            os << ",";
+        }
+
+        os << current->data;
+        first = false;
         current = current->next;
     }
 
