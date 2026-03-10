@@ -1,6 +1,6 @@
 //
 // Brian Mack, Juan Ipina, Blake Jackson, james Su
-// Project #2 Flip Cards-a Upload Link
+// Project #2 Flip Cards-b Upload Link
 // Header for the card class (to model different playing cards).
 //
 #pragma once
@@ -57,6 +57,12 @@ class Card
 
         Card(suit_t suit, value_t value);
         // Constructor.
+
+        Card(const Card& other);
+        // Copy constructor
+
+        Card& operator=(const Card& other);
+        // Overloaded assignment operator
 
         void setValue(value_t value);
         // Sets the card's value.

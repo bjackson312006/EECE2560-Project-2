@@ -1,6 +1,6 @@
 //
 // Brian Mack, Juan Ipina, Blake Jackson, james Su
-// Project #2 Flip Cards-a Upload Link
+// Project #2 Flip Cards-b Upload Link
 // Source file for the card class.
 //
 #include "card.hpp"
@@ -57,6 +57,30 @@ Card::Card(suit_t suit, value_t value)
 {
     this->suit = suit;
     this->value = value;
+}
+
+Card::Card(const Card& other)
+/* Copy constructor that copies suit and value from other
+ * parameters - other - the card to be copied from
+ */
+{
+    this->suit = other.suit;
+    this->value = other.value;
+}
+
+Card& Card::operator=(const Card& other)
+/* Overloaded assignment operator that assigns the suit and value
+ * from other to this
+ * parameters - other - the card to be copied from
+ * returns - reference to the card
+ */
+{
+    if (this != &other)
+    {
+        this->suit = other.suit;
+        this->value = other.value;
+    }
+    return *this;
 }
 
 void Card::setValue(value_t value)

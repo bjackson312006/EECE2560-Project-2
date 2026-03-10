@@ -1,6 +1,6 @@
 //
 // Brian Mack, Juan Ipina, Blake Jackson, james Su
-// Project #2 Flip Cards-a Upload Link
+// Project #2 Flip Cards-b Upload Link
 // Template class for LinkedList implementation
 //
 #pragma once
@@ -22,6 +22,14 @@ template <typename T> class LinkedList
         void add(T data);
         // Creates a new node of type T, and fills it with `data`. This node
         // becomes the new head of the list.
+
+        void appendNodeToBackOfList(typename LinkedList<T>::Node* node);
+        // Appends the given node to the end of the list
+        // assumptions - node is not part of another list
+
+        typename LinkedList<T>::Node* detachFrontNodeFromList(void);
+        // Removes and returns the first node in the list
+        // returns - nullptr if the list is empty
 
         T* get(int index);
         // Returns a pointer to the data stored in the node at `index`. You
@@ -48,6 +56,8 @@ template <typename T> class LinkedList
                                          // nullptr by default.
         };
         Node* head = nullptr; // Head of the linked list. Is nullptr by default
+        Node* tail = nullptr;
+        // Used for tracking in appendNodeToBackOfList
 };
 
 /* IMPLEMENTATION */
@@ -74,7 +84,60 @@ template <typename T> void LinkedList<T>::add(T data)
     node->data = data;
     node->next = this->head;
     this->head = node; // Set the current head to the new node.
+
+    if (this->tail == nullptr)
+    {
+        this->tail = node;
+    }
 }
+
+template <typename T>
+void LinkedList<T>::appendNodeToBackOfList(
+    typename LinkedList<T>::Node* node)
+/* Appends the given node to the end of the list
+ * parameters - node- the node to append
+ * assumptions - cannot be a part of another list
+ */
+{
+    if (node == nullptr)
+    {
+        return;
+    }
+
+    node->next = nullptr;
+
+    if (this->tail == nullptr)
+    {
+        this->head = this->tail = node;
+        return;
+    }
+
+    this->tail->next = node;
+    this->tail = node;
+} // end LinkedList::appendNodeToBackOfList
+
+template <typename T>
+typename LinkedList<T>::Node* LinkedList<T>::detachFrontNodeFromList(void)
+/* Removes and returns the first node in the list
+ * returns - pointer to the former head node
+ * returns - nullptr if the list is empty
+ */
+{
+    if (this->head == nullptr)
+    {
+        return nullptr;
+    }
+
+    Node* removed = this->head;
+    this->head = this->head->next;
+
+    if (this->head == nullptr)
+    {
+        this->tail = nullptr;
+    }
+
+    return removed;
+} // end LinkedList::detachFrontNodeFromList
 
 template <typename T> void LinkedList<T>::destroy(void)
 /* Deallocates the entire LinkedList. */
@@ -90,6 +153,7 @@ template <typename T> void LinkedList<T>::destroy(void)
     }
 
     this->head = nullptr; // Set head to nullptr to avoid dangling pointer
+    this->tail = nullptr;
 } // end LinkedList::destroy
 
 template <typename T> T* LinkedList<T>::get(int index)
