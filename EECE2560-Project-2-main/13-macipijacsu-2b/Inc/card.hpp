@@ -59,10 +59,10 @@ class Card
         // Constructor.
 
         Card(const Card& other);
-        // Copy constructor.
+        // Copy constructor
 
         Card& operator=(const Card& other);
-        // Overloaded assignment operator.
+        // Overloaded assignment operator
 
         void setValue(value_t value);
         // Sets the card's value.

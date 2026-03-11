@@ -23,13 +23,13 @@ template <typename T> class LinkedList
         // Creates a new node of type T, and fills it with `data`. This node
         // becomes the new head of the list.
 
-        void addBack(typename LinkedList<T>::Node* node);
-        // Appends the given node at the end of the list. Caller transfers
-        // ownership; the node must not be part of another list.
+        void appendNodeToBackOfList(typename LinkedList<T>::Node* node);
+        // Appends the given node to the end of the list
+        // assumptions - node is not part of another list
 
-        typename LinkedList<T>::Node* removeFront(void);
-        // Removes and returns the first node in the list. Caller owns the
-        // returned node. Returns nullptr if the list is empty.
+        typename LinkedList<T>::Node* detachFrontNodeFromList(void);
+        // Removes and returns the first node in the list
+        // returns - nullptr if the list is empty
 
         T* get(int index);
         // Returns a pointer to the data stored in the node at `index`. You
@@ -56,7 +56,8 @@ template <typename T> class LinkedList
                                          // nullptr by default.
         };
         Node* head = nullptr; // Head of the linked list. Is nullptr by default
-        Node* tail = nullptr; // Tail of the linked list for O(1) addBack.
+        Node* tail = nullptr;
+        // Used for tracking in appendNodeToBackOfList
 };
 
 /* IMPLEMENTATION */
@@ -90,10 +91,12 @@ template <typename T> void LinkedList<T>::add(T data)
     }
 }
 
-template <typename T> void LinkedList<T>::addBack(typename LinkedList<T>::Node* node)
-/* Appends the given node at the end of the list.
- * parameters - node: the node to append; its next must be nullptr.
- * assumptions - node is not part of another list.
+template <typename T>
+void LinkedList<T>::appendNodeToBackOfList(
+    typename LinkedList<T>::Node* node)
+/* Appends the given node to the end of the list
+ * parameters - node- the node to append
+ * assumptions - cannot be a part of another list
  */
 {
     if (node == nullptr)
@@ -111,11 +114,13 @@ template <typename T> void LinkedList<T>::addBack(typename LinkedList<T>::Node* 
 
     this->tail->next = node;
     this->tail = node;
-} // end LinkedList::addBack
+} // end LinkedList::appendNodeToBackOfList
 
-template <typename T> typename LinkedList<T>::Node* LinkedList<T>::removeFront(void)
-/* Removes the first node and returns it. Caller owns the returned node.
- * returns - pointer to the former head node, or nullptr if list was empty.
+template <typename T>
+typename LinkedList<T>::Node* LinkedList<T>::detachFrontNodeFromList(void)
+/* Removes and returns the first node in the list
+ * returns - pointer to the former head node
+ * returns - nullptr if the list is empty
  */
 {
     if (this->head == nullptr)
@@ -132,7 +137,7 @@ template <typename T> typename LinkedList<T>::Node* LinkedList<T>::removeFront(v
     }
 
     return removed;
-} // end LinkedList::removeFront
+} // end LinkedList::detachFrontNodeFromList
 
 template <typename T> void LinkedList<T>::destroy(void)
 /* Deallocates the entire LinkedList. */

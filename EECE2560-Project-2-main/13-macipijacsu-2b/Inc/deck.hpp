@@ -10,14 +10,14 @@
 #include "card.hpp"
 
 void playFlip(void);
-// Global function that plays the Flip game: init deck, shuffle, draw 24 into
-// hand, print hand and deck, then run the game and print results.
+// Plays the Flip game - init deck, shuffle, draw 24 cards into the hand,
+// print the hand and the deck, then run the game and afterwards print results
 
 class Deck
 {
     public:
-        Deck(void);
-        // Constructor.
+        Deck(bool shouldInitializeWithFullDeck = true);
+        // Constructor - default is to initalize the whole deck
 
         ~Deck(void);
         // Destructor.
@@ -26,14 +26,14 @@ class Deck
         // Shuffles the order of the deck.
 
         LinkedList<Card>::Node* deal(void);
-        // Returns the top card node and removes it from the deck. Caller owns
-        // the returned node. Returns nullptr if the deck is empty.
+        // Returns the top card node and removes it from the deck
+        // returns - nullptr if the deck is empty
 
         void replace(LinkedList<Card>::Node* node);
-        // Places the given card node on the bottom of the deck.
+        // Puts the given card node on the bottom of the deck
 
         bool isEmpty(void) const;
-        // Returns true if the deck has no cards.
+        // Returns true if the deck has no cards
 
         friend std::ostream& operator<<(std::ostream& os, const Deck& deck);
         // Overloaded << to allow for printing.

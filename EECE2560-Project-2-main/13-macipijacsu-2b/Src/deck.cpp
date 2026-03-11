@@ -8,10 +8,32 @@
 #include <iostream>
 #include <random>
 
-/* Helper: returns new score after flipping the given card. */
-static int scoreAfterFlip(int currentScore, const Card& card)
+static bool isEndGameChoice(char choice)
+// Returns true when the player chooses to end the game
+{
+    return choice == 'e' || choice == 'E';
+}
+
+static bool isFlipCardChoice(char choice)
+// Returns true when the player chooses to flip a card
+{
+    return choice == 'f' || choice == 'F';
+}
+
+static char promptPlayerForFlipOrEndChoice(void)
+// Prompts the player for a choice (flip or end game) and returns that choice
+{
+    char choice = ' ';
+    std::cout << "Flip next card (f) or End game (e)? ";
+    std::cin >> choice;
+    return choice;
+}
+
+static int calculateScoreAfterFlippingCard(int currentScore, const Card& card)
+// Returns the score after accounting for the newly flipped card
 {
     const int heartBonus = (card.getSuit() == Card::HEART) ? 1 : 0;
+
     switch (card.getValue())
     {
         case Card::ACE:
@@ -34,12 +56,94 @@ static int scoreAfterFlip(int currentScore, const Card& card)
             return 0 + heartBonus;
         default:
             return currentScore;
+    } // end switch
+}
+
+static void shuffleDeckAndPrintAllCards(Deck& deck)
+// Shuffles the given deck and prints all of the cards in it
+{
+    deck.shuffle();
+    std::cout << "Deck after shuffle:" << std::endl;
+    std::cout << deck;
+}
+
+static void moveTopCardsFromDeckToHandDeck(
+    Deck& deck,
+    Deck& hand,
+    int numberOfCardsToMove)
+// Moves up to numberOfCardsToMove cards from deck top to hand bottom
+{
+    for (int i = 0; i < numberOfCardsToMove; i++)
+    {
+        LinkedList<Card>::Node* node = deck.deal();
+
+        if (node != nullptr)
+        {
+            hand.replace(node);
+        }
     }
 }
 
-Deck::Deck(void) : front(list.head)
+static void printHandDeckAndRemainingDeck(const Deck& hand, const Deck& deck)
+// Prints both the current hand deck and remaining main deck
+{
+    std::cout << "Current hand deck (24 cards):" << std::endl;
+    std::cout << hand;
+    std::cout << "Remaining deck:" << std::endl;
+    std::cout << deck;
+}
+
+static void flipNextHandCardAndPrintUpdatedScore(Deck& hand, int& score)
+/* Flips the next hand's card, prints the card,
+ * updates the score, and prints the score
+ */
+{
+    LinkedList<Card>::Node* node = hand.deal();
+
+    if (node == nullptr)
+    {
+        return;
+    }
+
+    std::cout << "Flipped: " << node->data << std::endl;
+    score = calculateScoreAfterFlippingCard(score, node->data);
+    std::cout << "Score: " << score << std::endl;
+    delete node;
+}
+
+static int runFlipGameLoopAndReturnFinalScore(Deck& hand)
+// Runs the main game loop and returns the final score
+{
+    int score = 0;
+    char choice = ' ';
+
+    while (!isEndGameChoice(choice))
+    {
+        if (hand.isEmpty())
+        {
+            std::cout << "No more cards in hand. Game over." << std::endl;
+            break;
+        }
+
+        choice = promptPlayerForFlipOrEndChoice();
+
+        if (isFlipCardChoice(choice))
+        {
+            flipNextHandCardAndPrintUpdatedScore(hand, score);
+        }
+    } // end while
+
+    return score;
+}
+
+Deck::Deck(bool shouldInitializeWithFullDeck) : front(list.head)
 /* Constructor. Initializes the linked list. */
 {
+    if (!shouldInitializeWithFullDeck)
+    {
+        return;
+    }
+
     /* Fill the deck. */
 
     for (int suit = Card::SPADE; suit < Card::NUM_SUITS; suit++)
@@ -71,11 +175,12 @@ Deck::~Deck(void)
 }
 
 LinkedList<Card>::Node* Deck::deal(void)
-/* Returns the top card node and removes it from the deck.
- * returns - pointer to the former top node, or nullptr if deck is empty.
+/* Returns the top card node and removes it from the deck
+ * returns - pointer to the former top node, or nullptr if deck is empty
  */
 {
-    LinkedList<Card>::Node* node = this->list.removeFront();
+    LinkedList<Card>::Node* node = this->list.detachFrontNodeFromList();
+
     if (node != nullptr)
     {
         this->size--;
@@ -84,16 +189,16 @@ LinkedList<Card>::Node* Deck::deal(void)
 } // end Deck::deal
 
 void Deck::replace(LinkedList<Card>::Node* node)
-/* Places the given card node on the bottom of the deck.
- * parameters - node: the card node to place on the bottom.
- * assumptions - node is not null and not part of this deck.
+/* Places the given card node on the bottom of the deck
+ * parameters - node: the card node to place on the bottom
+ * assumptions - node is not null and not part of this deck
  */
 {
     if (node == nullptr)
     {
         return;
     }
-    this->list.addBack(node);
+    this->list.appendNodeToBackOfList(node);
     this->size++;
 } // end Deck::replace
 
@@ -128,7 +233,7 @@ void Deck::shuffle(void)
     /* Put vector back into linked list. */
     LinkedList<Card>::Node* current = this->list.head;
 
-    for (int i = 0; i < cards.size(); i++)
+    for (std::size_t i = 0; i < cards.size(); i++)
     {
 
         if (current == nullptr)
@@ -146,64 +251,20 @@ void Deck::shuffle(void)
 } // end Deck::shuffle
 
 void playFlip(void)
-/* Plays the Flip game: init deck, shuffle, draw 24 into hand, print, then
- * run the game (flip cards or end) and print results.
+/* Plays the Flip game -
+ * init deck, then shuffle card, draw 24 card into hand,
+ * print, then run the game loop to and afterwards print the results
  */
 {
-    /* (1) Initialize a deck with 52 cards in order. */
     Deck deck;
+    Deck hand(false);
+    const int HAND_CARD_COUNT = 24;
 
-    /* (2) Shuffle the deck and print all cards after shuffle. */
-    deck.shuffle();
-    std::cout << "Deck after shuffle:" << std::endl;
-    std::cout << deck;
-
-    /* (3) Draw and remove the top 24 cards; insert into the back of the hand. */
-    Deck hand;
-    for (int i = 0; i < 24; i++)
-    {
-        LinkedList<Card>::Node* node = deck.deal();
-        if (node != nullptr)
-        {
-            hand.replace(node);
-        }
-    }
-
-    /* (4) Print all cards in the hand and all remaining cards in the deck. */
-    std::cout << "Current hand deck (24 cards):" << std::endl;
-    std::cout << hand;
-    std::cout << "Remaining deck:" << std::endl;
-    std::cout << deck;
-
-    /* (5) Start the game and print results. Print each flipped card. */
-    std::cout << "--- Game start ---" << std::endl;
-    int score = 0;
-    char choice = ' ';
-
-    while (choice != 'e' && choice != 'E')
-    {
-        if (hand.isEmpty())
-        {
-            std::cout << "No more cards in hand. Game over." << std::endl;
-            break;
-        }
-
-        std::cout << "Flip next card (f) or End game (e)? ";
-        std::cin >> choice;
-
-        if (choice == 'f' || choice == 'F')
-        {
-            LinkedList<Card>::Node* node = hand.deal();
-            if (node != nullptr)
-            {
-                std::cout << "Flipped: " << node->data << std::endl;
-                score = scoreAfterFlip(score, node->data);
-                std::cout << "Score: " << score << std::endl;
-                delete node;
-            }
-        }
-    }
-
+    shuffleDeckAndPrintAllCards(deck);
+    moveTopCardsFromDeckToHandDeck(deck, hand, HAND_CARD_COUNT);
+    printHandDeckAndRemainingDeck(hand, deck);
+    std::cout << "**Start of the Game**" << std::endl;
+    int score = runFlipGameLoopAndReturnFinalScore(hand);
     std::cout << "Final score: " << score << std::endl;
-    std::cout << "--- Game end ---" << std::endl;
+    std::cout << "**End Of The Game**" << std::endl;
 } // end playFlip

@@ -60,8 +60,8 @@ Card::Card(suit_t suit, value_t value)
 }
 
 Card::Card(const Card& other)
-/* Copy constructor. Copies suit and value from other.
- * parameters - other: card to copy from.
+/* Copy constructor that copies suit and value from other
+ * parameters - other - the card to be copied from
  */
 {
     this->suit = other.suit;
@@ -69,9 +69,10 @@ Card::Card(const Card& other)
 }
 
 Card& Card::operator=(const Card& other)
-/* Overloaded assignment operator. Copies suit and value from other.
- * parameters - other: card to copy from.
- * returns - reference to this card.
+/* Overloaded assignment operator that assigns the suit and value
+ * from other to this
+ * parameters - other - the card to be copied from
+ * returns - reference to the card
  */
 {
     if (this != &other)
